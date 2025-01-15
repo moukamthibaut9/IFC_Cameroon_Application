@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre_page %} CONNEXION {% endblock %}
+
+{% block header_content %} 
+<div style="height: 100px;"></div>
+{% endblock %}
+
+{% block main_content %}
+    {% if messages %}
+        {% for message in messages %}
+            <h6 class="message_erreur">{{ message }}</h6>
+        {% endfor %}
+    {% endif %}
+    <div class="sign">
+        <div class="sign1">
+            <h4 class="mb-3">Connectez-vous à votre compte pour bénéficier de plus de fonctionnalités !</h4>
+            <h5 class="mb-3">Veillez à bien remplir les champs, puis validez.</h4>
+        </div>
+        <div class="sign2">
+            <form action="" method="post">{% csrf_token %}
+                <div>
+                    <label for="id_username"><h6>Entrez votre nom d'utilisateur</h6></label><br>
+                    {{ connexion_form.username }}
+                </div>
+                <div>
+                    <label for="id_password"><h6>Entrez votre mot de passe</h6></label><br>
+                    {{ connexion_form.password }}
+                </div>
+                <div>
+                    <input type="submit" value="Valider">
+                </div>
+            </form>
+            <h5>Cliquez <a href="{% url 'sign_up' %}">ici</a> pour créer un compte si vous n'en disposez pas encore.</h5>
+        </div>
+    </div>
+{% endblock %}

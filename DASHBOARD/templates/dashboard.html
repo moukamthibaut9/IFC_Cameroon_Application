@@ -1,0 +1,384 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load my_personalized_filters %}<!-- Chargement de mes filtres personalisés -->
+
+{% block main_content %}
+<section class="primary_dashboard_section" id="global_elements_displaying">
+  <h4>VISUALISEZ, AJOUTEZ, MODIFIEZ OU SUPPRIMEZ DES ELEMENTS</h4> 
+  <div class="primary_dashboard_section_btn_options">
+    <button onclick="displaying_company_bloc();">VOIR LES SOCIETES</button>
+    <button onclick="displaying_convention_bloc();">VOIR LES CONVENTIONS</button>
+    <button onclick="displaying_setting_bloc();">VOIR LES PARAMETRAGES</button>
+    <button onclick="displaying_employee_bloc();">VOIR LES EMPLOYES</button>
+    <button onclick="displaying_folder_bloc();">VOIR LES DOSSIERS</button>
+  </div>
+  <section id="company_entity" style="display: none;">
+    <div class="add_entity_instance_btn">
+      <a href="{% url 'add_company' %}"><button>AJOUTER UNE SOCIETE</button></a>
+    </div>
+    <div class="displaying_entities">
+      {% for company in companies %}
+      <div>
+        <h6>{{ company.company_name|upper }}</h6>
+        <div>
+          <a href="{% url 'update_company' company.id %}">
+            <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+          </a>
+          {% if user|has_permission:'DASHBOARD.delete_company' %}
+            <a href="{% url 'delete_company' company.id %}">
+              <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section id="convention_entity" style="display: none;">
+    <div class="add_entity_instance_btn">
+      <a href="{% url 'add_convention' %}"><button>AJOUTER UNE CONVENTION</button></a>
+    </div>
+    <div class="displaying_entities">
+      {% for convention in conventions %}
+      <div>
+        <h6>{{ convention }}</h6>
+        <div>
+          <a href="{% url 'update_convention' convention.id %}">
+            <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+          </a>
+          {% if user|has_permission:'DASHBOARD.delete_convention' %}
+            <a href="{% url 'delete_convention' convention.id %}">
+              <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+            </a>
+          {% endif %}
+            
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section id="employee_entity" style="display: none;">
+    <div class="add_entity_instance_btn">
+      <a href="{% url 'add_employee' %}"><button>AJOUTER UN EMPLOYE</button></a>
+    </div>
+    <div class="displaying_entities">
+      {% for employee in employees %}
+      <div>
+        <h6>{{ employee.name|upper }}</h6>
+        <h6>{{ employee.identifier }}</h6>
+        <div>
+          <a href="{% url 'update_employee' employee.id %}">
+            <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+          </a>
+          {% if user|has_permission:'DASHBOARD.delete_employee' %}
+            <a href="{% url 'delete_employee' employee.id %}">
+              <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+            </a>
+          {% endif %}
+            
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section id="setting_entity" style="display: none;">
+    <div class="add_entity_instance_btn">
+      <a href="{% url 'add_setting' %}"><button>AJOUTER UN PARAMETRAGE</button></a>
+    </div>
+    <div class="displaying_entities">
+      {% for setting in settings %}
+      <div>
+        <h6>{{ setting }}</h6>
+        <div>
+          <a href="{% url 'update_setting' setting.id %}">
+            <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+          </a>
+          {% if user|has_permission:'DASHBOARD.delete_setting' %}
+            <a href="{% url 'delete_setting' setting.id %}">
+              <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section id="folder_entity" style="display: none;">
+    <div class="add_entity_instance_btn">
+      <a href="{% url 'add_folder' %}"><button>AJOUTER UN DOSSIER</button></a>
+    </div>
+    <div class="displaying_entities">
+      {% for folder in folders %}
+      <div>
+        <h6>{{ folder }}</h6>
+        <div>
+          <a href="{% url 'update_folder' folder.id %}">
+            <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+          </a>
+          {% if user|has_permission:'DASHBOARD.delete_folder' %}
+            <a href="{% url 'delete_folder' folder.id %}">
+              <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+            </a>
+          {% endif %}
+          <form method="get" action="{% url 'export_folder_data' folder.id %}">
+            <button type="submit" name="format" value="pdf" style="background-color: greenyellow;border-radius: 10px;margin: 5px;">
+              Exporter en PDF
+            </button>
+            <button type="submit" name="format" value="excel" style="background-color: greenyellow;border-radius: 10px;">
+              Exporter en Excel
+            </button><br>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</section>
+<section  class="primary_dashboard_section" id="detailed_elements_displaying">
+  <h4>CONSULTEZ LES ATTRIBUTS ESSENTIELS DE VOS ELEMENTS DE FACON PLUS DETAILLEE</h4>
+  <div class="primary_dashboard_section_btn_options">
+    <button onclick="displaying_company_details_bloc();">AFFICHER LES DETAILS DES SOCIETES</button>
+    <button onclick="displaying_convention_details_bloc();">AFFICHER LES DETAILS DES CONVENTIONS</button>
+    <button onclick="displaying_setting_details_bloc();">AFFICHER LES DETAILS DES PARAMETRAGES</button>
+    <button onclick="displaying_employee_details_bloc();">AFFICHER LES DETAILS DES EMPLOYES</button>
+    <button onclick="displaying_folder_details_bloc();">AFFICHER LES DETAILS DES DOSSIERS</button>
+  </div>
+  <section class="secondary_dashboard_section" id="company_details">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom société</th>
+          <th>Nom PDG</th>
+          <th>Statut</th>
+          <th>Secteur activité</th>
+          <th>Localisation</th>
+          <th>NbE</th>
+          <th>E-mail</th>
+          <th>Date création</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for company in companies %}
+          <tr>
+            <td>{{ company.company_name|upper|truncatechars:20 }}</td>
+            <td>{{ company.director_name }}</td>
+            <td>{{ company.status }}</td>
+            <td>{{ company.activity_sector }}</td>
+            <td>{{ company.localisation|truncatechars:25 }}</td>
+            <td>{{ company.nbr_employees }}</td>
+            <td>{{ company.email_contact|truncatechars:15 }}</td>
+            <td>{{ company.birth_date }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>
+      <u>Légende</u>: <b><i>NbE:</i></b> Nombre d'employés de la société.
+    </p>
+  </section>
+  <section class="secondary_dashboard_section" id="convention_details" style="display: none;">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom de la convention</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for convention in conventions  %}
+          <tr>
+            <td>{{ convention }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  <section class="secondary_dashboard_section" id="setting_details" style="display: none;">
+    <table>
+      <thead>
+        <tr>
+          <th>Convention consernée</th>
+          <th>Am</th>
+          <th>Tib</th>
+          <th>It</th>
+          <th>Itib</th>
+          <th>Ta</th>
+          <th>Ti</th>
+          <th>Ar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for  setting in settings  %}
+          <tr>
+            <td>{{ setting.convention|truncatechars:50 }}</td>
+            <td>{{ setting.base_seniority }}</td>
+            <td>{{ setting.base_compensation_rate }}</td>
+            <td>{{ setting.years_gap }}</td>
+            <td>{{ setting.add_compensation_rate }}</td>
+            <td>{{ setting.discount_rate }}</td>
+            <td>{{ setting.wage_inflation_rate }}</td>
+            <td>{{ setting.employee_retirement_age }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>
+      <u>Légende</u>: <br>
+      <b><i>Am:</i></b> Ancienneté minimal | <b><i>Tib:</i></b> Taux d'indemnité de base | 
+      <b><i>It:</i></b> Intervalle de temps(en années) avant augmentation du Tib | 
+      <b><i>Itib:</i></b> Valeur de l'incrémentation du Tib après chaque It | 
+      <b><i>Ta:</i></b> Taux d'actualisation salariale | <b><i>Ti:</i></b> Taux d'inflation salariale | 
+      <b><i>Ar:</i></b> Age de retraite prévu pour un employé.
+    </p>
+  </section>
+  <section class="secondary_dashboard_section" id="employee_details" style="display: none;">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Age</th>
+          <th>Matricule</th>
+          <th>Anc</th>
+          <th>Salaire</th>
+          <th>Catégorie</th>
+          <th>Société</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for  employee in employees  %}
+          <tr>
+            <td>{{ employee.name|upper|truncatechars:15 }}</td>
+            <td>{{ employee.age }}</td>
+            <td>{{ employee.identifier }}</td>
+            <td>{{ employee.seniority }}</td>
+            <td>{{ employee.base_salary }} FCFA</td>
+            <td>{{ employee.get_socio_professional_category_display|truncatechars:15 }}</td>
+            <td>{{ employee.company.company_name|truncatechars:15 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>
+      <u>Légende</u>: <b><i>Anc:</i></b> Ancienneté.
+    </p>
+  </section>
+  <section class="secondary_dashboard_section" id="folder_details" style="display: none;">
+    <table>
+      <thead>
+        <tr>
+          <th>De l'employé</th>
+          <th>De la société</th>
+          <th>Statut</th>
+          <th>IFC associé</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for  folder in folders  %}
+          <tr>
+            <td>{{ folder.employee.name|upper|truncatechars:15 }}</td>
+            <td>{{ folder.employee.company.company_name|truncatechars:20 }}</td>
+            <td>{{ folder.get_status_display }}</td>
+            <td>{{ folder.ifc_result }} FCFA</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</section>
+<section  class="primary_dashboard_section" id="history">
+  <h4>CONSULTEZ VOTRE HISTORIQUE</h4> 
+</section>
+
+<script lang="js">
+  /* Variables correspondantes aux sections secondaires de la premiere section primaire du dashboard, 
+  section qui gere l'affichage, l'ajout, la modiffication et la suppression d'instances d'une entite
+  telle qu'une societe, une convention ou un employe*/
+  var company_entity = document.getElementById('company_entity')
+  var convention_entity = document.getElementById('convention_entity')
+  var employee_entity = document.getElementById('employee_entity')
+  var setting_entity = document.getElementById('setting_entity')
+  var folder_entity = document.getElementById('folder_entity')
+  /* Variables correspondantes aux sections secondaires de la deuxieme section primaire du dashboard, 
+  section qui gere l'affichage plus en detail d'une instance d'une entite*/
+  var company_details = document.getElementById('company_details')
+  var convention_details = document.getElementById('convention_details')
+  var setting_details = document.getElementById('setting_details')
+  var employee_details = document.getElementById('employee_details')
+  var folder_details = document.getElementById('folder_details')
+
+
+  /*Fonctions pour la gestion de l'affichage des entites selon celle selectionnee*/
+  function displaying_company_bloc(){
+    company_entity.style.display = 'block';
+    convention_entity.style.display = 'none';
+    employee_entity.style.display = 'none';
+    setting_entity.style.display = 'none';
+    folder_entity.style.display = 'none';
+  }
+  function displaying_convention_bloc(){
+    company_entity.style.display = 'none';
+    convention_entity.style.display = 'block'
+    employee_entity.style.display = 'none';
+    setting_entity.style.display = 'none';
+    folder_entity.style.display = 'none';
+  }
+  function displaying_employee_bloc(){
+    company_entity.style.display = 'none';
+    convention_entity.style.display = 'none';
+    employee_entity.style.display = 'block';
+    setting_entity.style.display = 'none';
+    folder_entity.style.display = 'none';
+  }
+  function displaying_setting_bloc(){
+    company_entity.style.display = 'none';
+    convention_entity.style.display = 'none';
+    employee_entity.style.display = 'none';
+    setting_entity.style.display = 'block';
+    folder_entity.style.display = 'none';
+  }
+  function displaying_folder_bloc(){
+    company_entity.style.display = 'none';
+    convention_entity.style.display = 'none';
+    employee_entity.style.display = 'none';
+    setting_entity.style.display = 'none';
+    folder_entity.style.display = 'block';
+  }
+
+  /*Fonctions pour la gestion de l'affichage des details d'une instance de l'entité selectionnée*/
+  function displaying_company_details_bloc(){
+    company_details.style.display = 'flex';
+    convention_details.style.display = 'none';
+    setting_details.style.display = 'none';
+    employee_details.style.display = 'none';
+    folder_details.style.display = 'none';
+  }
+  function displaying_convention_details_bloc(){
+    company_details.style.display = 'none';
+    convention_details.style.display = 'flex';
+    setting_details.style.display = 'none';
+    employee_details.style.display = 'none';
+    folder_details.style.display = 'none';
+  }
+  function displaying_setting_details_bloc(){
+    company_details.style.display = 'none';
+    convention_details.style.display = 'none';
+    setting_details.style.display = 'flex';
+    employee_details.style.display = 'none';
+    folder_details.style.display = 'none';
+  }
+  function displaying_employee_details_bloc(){
+    company_details.style.display = 'none';
+    convention_details.style.display = 'none';
+    setting_details.style.display = 'none';
+    employee_details.style.display = 'flex';
+    folder_details.style.display = 'none';
+  }
+  function displaying_folder_details_bloc(){
+    company_details.style.display = 'none';
+    convention_details.style.display = 'none';
+    setting_details.style.display = 'none';
+    employee_details.style.display = 'none';
+    folder_details.style.display = 'flex';
+  }
+  
+</script>
+{% endblock %}

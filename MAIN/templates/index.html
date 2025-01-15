@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_content %} 
+<div class="p-5 text-center bg-image" style="background-image: url('{% static 'img/img4.jpg' %}');height: 500px;">
+	<div class="mask">
+		<div class="d-flex justify-content-center align-items-center h-100">
+			<div class="text-white">
+				<span class="btn btn-outline-success btn-lg mb-3" style="font-size: 1.5em;cursor: none;">
+					Bienvenus chez IFCCA !!
+				</span>
+				<h4 class="mb-9">
+					Nous vous aidons à contrôler et gérer votre entreprise efficacement
+				</h4>
+				<a href="{% url 'dashboard' %}">
+					<button class="get_started">CLIQUER ICI POUR COMMENCER !</button>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<p style="text-align: justify;margin: 15px;font-size: 1.2em;font-weight: bolder;">
+	Vous voulez mieux prendre en charge la retraite de vos employés et ce façon simple et efficace en calculant 
+	par exemple leurs indemnités de fin de carrière via une méthode et des critères précis? 
+	Vous désirez reçevoir des conseils pour gérer votre argent? Ou consulter des professionnels qui vont 
+	vous assister dans la gestion de vos biens?<br>
+	Alors, pas de panique, ici vous êtes au bon endroit, faites nous confiance et nous nous occuperons 
+	de tout! 
+</p>
+<h2 style="text-align: center;color: #007bff;margin: 15px;">A PROPOS DE NOUS</h2>
+<div style="text-align:justify;margin: 15px;font-weight: bold;">
+	<p>
+		Nous sommes une societé ayant vu le jour en novembre 2024 disposant actuellement d'un seul siège 
+		localisé dans la ville de Maroua au quartier dit Ouro-Tchédé. Via notre plateforme IFFCA, notre 
+		objectif principal est d'aider au contrôle et à la gestion de votre entreprise. Pour cela nous 
+		mettons à disposition des entreprises notre experience, nos compétences et notre personnonel 
+		pour les fournir les services presentés ci dessous.
+	</p>
+</div>
+<h2 style="text-align: center;color: #007bff;">QU'EST CE QUE NOUS VOUS OFFRONS?</h2>
+<div class="services_presentation">
+	<div>
+		<h4 style="color: #28a745;">1. Meilleure prise en charge de vos employés</h4>
+		<p>
+			Avec notre outil integré, enregistrez vos employés et calculez facilement et efficacement 
+			des parametres essentiels les concernant, tels que leur indemnité de fin de carrière(IFC), 
+			leur  productivité, ... <br>
+			<a data-mdb-ripple-init class="btn btn-outline-success btn-lg" href="{% url 'dashboard' %}#ifc_compute" 
+			role="button">Commencer !</a>
+		</p>
+	</div>
+	<div>
+		<img src="{% static 'img/img1.jpg' %}" alt="">
+	</div>
+</div>
+<div class="services_presentation">
+	<div>
+		<img src="{% static 'img/img5.jpg' %}" alt="">
+	</div>
+	<div>
+		<h4 style="color: #28a745;">2. Aide à la planification de vos activités</h4>
+		<p>
+			Nous vous aidons à planifier le déroulement des activités présentes et futures au sein de votre 
+			structure, nous vous offrons gratuitement nos conseils et mettons à votre disposition un forum 
+			où vous pourriez partarger avec d'autres chefs d'entreprises vos problèmes, vos expériences et 
+			vos solutions face à certains problèmes.<br>
+			<a data-mdb-ripple-init class="btn btn-outline-success btn-lg" href="{% url 'services' %}#detail_service2" 
+			role="button" style="margin: 5px;">En savoir plus !</a>
+			<a data-mdb-ripple-init class="btn btn-outline-success btn-lg" href="{% url 'forum' %}" 
+			role="button" style="margin: 5px;">Acceder au Forum</a>
+		</p>
+	</div>
+</div>
+<div class="services_presentation">
+	<div>
+		<h4 style="color: #28a745;">3. Aide à la gestion efficace de vos biens</h4>
+		<p>
+			Si vous le souhaitez, nous povons également vous aider à gérer vos biens. Pour cela, nous 
+			disposons d'un personnel expérimenté et qualifié avec lequel nous pouvons vous mettre en 
+			relation. Des conseils quant à la gestion de votre argent sont également disponibles sur la 
+			plateforme <br>
+			<a data-mdb-ripple-init class="btn btn-outline-success btn-lg" href="{% url 'services' %}#detail_service3"
+			role="button">Cliquez ici pour en savoir plus</a>
+		</p>
+	</div>
+	<div>
+		<img src="{% static 'img/img3.jpg' %}" alt="">
+	</div>
+</div>
+<h2 style="text-align: center;color: #007bff;margin-top: 20px;">UN PEU DE CULTURE POUR LA FORME</h2>
+<div style="text-align:justify;margin: 20px;">
+	<p>
+		<span style="color: #28a745;">1. L'IFC (Imdenité de Fin de Carrière)</span><br>
+		Également appelée indemnité de départ à la retraite, elle correspond à la somme que l’employeur doit 
+		verser à chaque salarié, quel que soit son statut (cadre ou non cadre).<br>
+		Le versement d'une indemnité de fin de carrière constitue une obligation légale pour l'employeur. Cependant,  
+		des conditions peuvent s'imposer selon la législation en vigueur au sein de la société où travaille 
+		l'employé; par exemple, il peut etre exigé que l'employé ait un âge minimal et un nombre d'années de 
+		service minimal lors de son départ pour la retraite. <br>
+		Planifier cette charge afin d’éviter les à-coups de trésorerie au moment du ou des départ(s) à la 
+		retraite de vos collaborateurs est possible ! 
+	</p>
+	<p>
+		<span style="color: #28a745;">2. Faillite des entreprises</span><br>
+		Au Cameroun, les PME représentent entre 90 % et 95 % de la population des entreprises 
+		camerounaises et emploient environ 50 % des actifs. Mais en dépit de leur importance, la plupart 
+		d’entre elles sont confrontés aux problèmes de faillite. <br>
+		Les résultats empiriques montrent que, la défaillance des PME s’explique par une multitude de facteurs 
+		dont les principales causes sont : le manque de liquidité, la faible capacité d’endettement, 
+		l’environnement des affaires, l’incompétence et le mode de réflexion stratégique des dirigeants et 
+		l’incapacité de ces PME à répondre efficacement au changement. <br>
+		<a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://shs.cairn.info/article/RCG_030_0121/pdf%3Flang%3Dfr&ved=2ahUKEwj4opDs09GKAxXPTkEAHSHZNAIQFnoECBUQAw&usg=AOvVaw2-kIbja63YMFVuWAX6KrLn">En apprendre plus ici</a>
+	</p>
+</div>
+{% endblock %}
+
+{% block infos_content %}
+<div id="infos">
+
+</div>
+{% endblock %}

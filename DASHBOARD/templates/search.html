@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load my_personalized_filters %}<!-- Chargement de mes filtres personalisés -->
+
+{% block main_content %}
+<div class="displaying_entities">
+    {% if folders %}
+        {% for folder in folders %}
+        <div>
+            <div>
+                <h6>Dossier de l'employé: {{ folder.employee.name|upper }},</h6>
+                <h6>travaillant dans la société: {{ folder.employee.company.company_name|upper }},</h6>
+                <h6>faisant dans: {{ folder.employee.company.get_activity_sector_display }},</h6>
+                <h6>et dont l'IFC vaut: {{ folder.ifc_result }} FCFA,</h6>
+                <h6>selon la: {{ folder.setting.convention.get_name_display }}</h6>
+                <h6>Statut du dossier: {{ folder.get_status_display }}</h6>
+            </div>
+            <div>
+                <a href="{% url 'update_folder' folder.id %}">
+                <button style="background-color: orange;border-radius: 10px;">Modifier</button>
+                </a>
+                {% if user|has_permission:'DASHBOARD.delete_folder' %}
+                    <a href="{% url 'delete_folder' folder.id %}">
+                    <button style="background-color: orangered;border-radius: 10px;">Supprimer</button>
+                    </a>
+                {% endif %}
+                <form method="get" action="{% url 'export_folder_data' folder.id %}">
+                    <button type="submit" name="format" value="pdf" style="background-color: greenyellow;border-radius: 10px;margin: 5px;">
+                      Exporter en PDF
+                    </button>
+                    <button type="submit" name="format" value="excel" style="background-color: greenyellow;border-radius: 10px;">
+                      Exporter en Excel
+                    </button><br>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="align-items: center;justify-content: center;height: 300px;">
+            <h3>AUCUN RÉSULTAT TROUVÉ</h3>
+        </div>
+    {% endif %}
+  </div>
+{% endblock %}
